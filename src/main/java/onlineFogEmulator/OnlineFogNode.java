@@ -3,7 +3,6 @@ package onlineFogEmulator;
 import org.apache.activemq.artemis.api.core.RoutingType;
 import org.apache.activemq.artemis.api.core.SimpleString;
 import org.apache.activemq.artemis.api.core.client.*;
-import util.SettingReader;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -22,7 +21,7 @@ public class OnlineFogNode extends Thread {
 
         // Reading the broker URL
         SettingReader st = new SettingReader();
-        urlOut = st.readElementFromFileXml("settings.xml", "areaNode", "urlIn");
+        urlOut = st.readElementFromFileXml("settings.xml", "areaNode", "urlOut");
         System.out.println("Broker out: " + urlOut);
     }
 
