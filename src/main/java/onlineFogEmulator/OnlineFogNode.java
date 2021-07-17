@@ -1,5 +1,7 @@
 package onlineFogEmulator;
 
+import com.google.gson.Gson;
+import model.AggregateVehiclesTravelTimeSample;
 import org.apache.activemq.artemis.api.core.RoutingType;
 import org.apache.activemq.artemis.api.core.SimpleString;
 import org.apache.activemq.artemis.api.core.client.*;
@@ -82,6 +84,12 @@ public class OnlineFogNode extends Thread {
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
+
+                    //Setting the aggregationTimestamp
+                    Gson g = new Gson();
+                    AggregateVehiclesTravelTimeSample s = g.fromJson(JSLine, AggregateVehiclesTravelTimeSample.class);
+                    s.setAggTimestamp(System.currentTimeMillis());
+                    JSLine = new Gson().toJson(s);
 
                     //System.out.println("Sending packet #" + i);
                     //System.out.println(JSLine);
