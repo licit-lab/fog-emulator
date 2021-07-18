@@ -127,7 +127,8 @@ public class OnlineFogNode extends Thread {
             // A queue per producer (multipleNorthboundQueues)
             String NORTHBOUND_SUFFIX = "-Northbound";
             sessionOut.createQueue(new SimpleString(this.name + NORTHBOUND_SUFFIX), RoutingType.ANYCAST, new SimpleString(this.name + NORTHBOUND_SUFFIX), true);
-            producer = sessionOut.createProducer(new SimpleString(this.name + NORTHBOUND_SUFFIX));
+            if(producer == null)
+                producer = sessionOut.createProducer(new SimpleString(this.name + NORTHBOUND_SUFFIX));
 
         } catch (Exception e) {
             e.printStackTrace();
