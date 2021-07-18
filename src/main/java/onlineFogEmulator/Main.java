@@ -31,7 +31,7 @@ public class Main {
 
         System.out.println("Num areas: " + numAreas);
 
-        numAreas = 20;
+        //numAreas = 20;
 
         // just for test: supposing that we have only five areas
 
