@@ -6,7 +6,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Timer;
-import java.util.TimerTask;
 
 public class Main {
 
@@ -32,8 +31,9 @@ public class Main {
 
         System.out.println("Num areas: " + numAreas);
 
+        numAreas = 20;
+
         // just for test: supposing that we have only five areas
-        numAreas = 5;
 
         // Printing the area names
         for (int i = 0; i < numAreas; i++) {
@@ -55,11 +55,11 @@ public class Main {
         // NB: just after starting them, all fog threads sleep for an indefinite time (and wait to be awakened).
 
         // Main thread waits for a moment (to give time for threads creation and sleeping)
-        Thread.sleep(2000);     // instead, we can use the below delay parameter
+        // instead, we can use the below delay parameter
 
         // Main thread sets a timer to keep awakening fog threads (every 1 minute(s))
         Timer timer = new Timer();
-        timer.scheduleAtFixedRate(new FogTask(fogArray), 0, 1 * 60 * 1000);
+        timer.scheduleAtFixedRate(new FogTask(fogArray), 3*60*1000, 3*60*1000);
         // Delay : delay in milliseconds before task is to be executed.
         // Period: time in milliseconds between successive task executions.
 

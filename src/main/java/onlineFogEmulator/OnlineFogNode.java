@@ -30,7 +30,7 @@ public class OnlineFogNode extends Thread {
     @Override
     public void run() {
         // Parameters and variables to read the corresponding area.csv data
-        String csvFile = this.name + ".csv";
+        String csvFile = this.name + ".txt";
         BufferedReader bufferedReader = null;
         try {
             bufferedReader = new BufferedReader(new FileReader(csvFile));
@@ -149,5 +149,3 @@ public class OnlineFogNode extends Thread {
     }
 
 }
-
-

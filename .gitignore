@@ -17,3 +17,4 @@ areas.txt
 *.py
 *.json
 src/main/java/test/Main.java
+*.txt
