@@ -77,6 +77,8 @@ public class OnlineFogNode extends Thread {
                 // we have numLinks lines to be read and sent. Thenn the fog thread has to sleep until being awakened in next interval.
 
                 //System.out.println("Thread \"" + this.name + "\": Sending " + numLinks + " packets to the remote broker. ");
+
+                //timestamp before entering the loop
                 for (int i = 0; i < numLinks; i++) {
                     String JSLine = null;
                     try {
@@ -95,6 +97,8 @@ public class OnlineFogNode extends Thread {
                     //System.out.println(JSLine);
                     sendMessage(JSLine);
                 }
+                //timestamp after exiting the loop
+                //write the timestamps and the timestamp difference, the domaintimestamp, area
                 System.out.print("Thread \"" + this.name + "\": " + numLinks + " packets have been sent. ");
 
             }
