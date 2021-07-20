@@ -25,6 +25,7 @@ public class OnlineFogNode extends Thread {
         SettingReader st = new SettingReader();
         urlOut = st.readElementFromFileXml("settings.xml", "areaNode", "urlOut");
         System.out.println("Broker out: " + urlOut);
+        createProducer();
     }
 
     @Override
@@ -39,7 +40,7 @@ public class OnlineFogNode extends Thread {
         }
 
         // create producer and its queue on broker
-        createProducer();
+//       createProducer();
 
         while (true) {
             // all fog threads start by sleeping for an indefinite time.
