@@ -13,9 +13,9 @@
     	   2 = AGGTOTALTRAVELTIME -->
     	<multipleNorthboundQueues>1</multipleNorthboundQueues>
     	<!-- 0 = false, 1 = true -->
-    	<urlIn>tcp://localhost:61616</urlIn>
+    	<urlOut>tcp://localhost:61616</urlOut>
 
-        <urlOut>tcp://137.121.170.248:30340/</urlOut>
+<!--        <urlOut>tcp://137.121.170.248:30340/</urlOut>-->
     	<!-- <urlOut>tcp://137.121.170.248:30340</urlOut> -->
    
     </areaNode>

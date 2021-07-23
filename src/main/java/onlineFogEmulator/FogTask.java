@@ -4,7 +4,7 @@ import java.util.TimerTask;
 
 public class FogTask extends TimerTask {
     private int numAggIntervals = 0;
-    private OnlineFogNode[] fogArray;
+    private final OnlineFogNode[] fogArray;
 
     public FogTask(OnlineFogNode[] fogArray){
         this.fogArray = fogArray;
@@ -18,10 +18,10 @@ public class FogTask extends TimerTask {
         numAggIntervals++;
 
         int numAliveThreads = 0;
-        for (int i = 0; i < fogArray.length; i++) {
-            if (fogArray[i].isAlive()){
+        for (OnlineFogNode onlineFogNode : fogArray) {
+            if (onlineFogNode.isAlive()) {
                 numAliveThreads++;
-                fogArray[i].interrupt();
+                onlineFogNode.interrupt();
             }
         }
 

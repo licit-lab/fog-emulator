@@ -9,7 +9,7 @@ import java.util.Timer;
 
 public class Main {
 
-    public static void main(String[] args) throws InterruptedException, IOException {
+    public static void main(String[] args) throws IOException {
 
         // Reading area names and counting their number
         String file = "areaNames.txt";
@@ -43,7 +43,7 @@ public class Main {
         // Main thread creating online fog objects/threads (a node per area)
         OnlineFogNode[] fogArray = new OnlineFogNode[numAreas];
         for (int i = 0; i < numAreas; i++) {
-            fogArray[i] = new OnlineFogNode(areaNames.get(i));;
+            fogArray[i] = new OnlineFogNode(areaNames.get(i));
         }
 
         // Main Thread starting all fog threads
