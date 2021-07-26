@@ -2,6 +2,7 @@ package onlineFogEmulator;
 
 import com.google.gson.Gson;
 import model.AggregateVehiclesTravelTimeSample;
+import org.apache.activemq.artemis.api.core.ActiveMQException;
 import org.apache.activemq.artemis.api.core.RoutingType;
 import org.apache.activemq.artemis.api.core.SimpleString;
 import org.apache.activemq.artemis.api.core.client.*;
@@ -18,6 +19,7 @@ public class OnlineFogNode extends Thread {
     private static String urlOut;
     private final BufferedWriter bufferedWriter;
     private final CSVPrinter csvPrinter;
+    private final String NORTHBOUND_SUFFIX = "-Northbound";
 
     public OnlineFogNode(String name) throws IOException {
         this.name = name;
@@ -51,6 +53,14 @@ public class OnlineFogNode extends Thread {
             } catch (InterruptedException e) {
                 //e.printStackTrace();
                 System.out.println("Thread \"" + this.name + "\" has been awaken.");
+            }
+
+            if(producer.isClosed()) {
+                try {
+                    producer = sessionOut.createProducer(new SimpleString(this.name + NORTHBOUND_SUFFIX));
+                } catch (ActiveMQException e) {
+                    e.printStackTrace();
+                }
             }
 
             String csvLine = null;
@@ -146,7 +156,6 @@ public class OnlineFogNode extends Thread {
             sessionOut.start();
 
             // A queue per producer (multipleNorthboundQueues)
-            String NORTHBOUND_SUFFIX = "-Northbound";
             sessionOut.createQueue(new SimpleString(this.name + NORTHBOUND_SUFFIX), RoutingType.ANYCAST, new SimpleString(this.name + NORTHBOUND_SUFFIX), true);
             if(producer == null)
                 producer = sessionOut.createProducer(new SimpleString(this.name + NORTHBOUND_SUFFIX));
