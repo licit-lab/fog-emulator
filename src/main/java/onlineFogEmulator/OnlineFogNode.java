@@ -109,6 +109,8 @@ public class OnlineFogNode extends Thread {
             long differenceTimestamp = afterTimestamp - beforeTimestamp;
             try {
                 csvPrinter.printRecord(numLinks,domainAggTimestamp,beforeTimestamp,afterTimestamp);
+                csvPrinter.flush();
+                bufferedWriter.flush();
             } catch (IOException e) {
                 e.printStackTrace();
             }
