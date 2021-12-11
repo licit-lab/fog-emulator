@@ -13,7 +13,7 @@
     	   2 = AGGTOTALTRAVELTIME -->
     	<multipleNorthboundQueues>1</multipleNorthboundQueues>
     	<!-- 0 = false, 1 = true -->
-    	<urlOut>tcp://localhost:61616</urlOut>
+    	<urlOut>tcp://172.31.2.25:30360?clientFailureCheckPeriod=30000&amp;reconnect-attempts=100&amp;retryIntervalMultiplier</urlOut>
 
 <!--        <urlOut>tcp://137.121.170.248:30340/</urlOut>-->
     	<!-- <urlOut>tcp://137.121.170.248:30340</urlOut> -->

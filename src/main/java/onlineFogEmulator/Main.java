@@ -1,5 +1,8 @@
 package onlineFogEmulator;
 
+import org.apache.activemq.artemis.api.core.client.ActiveMQClient;
+import org.apache.activemq.artemis.api.core.client.ServerLocator;
+
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -9,12 +12,16 @@ import java.util.Timer;
 
 public class Main {
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws Exception {
 
         // Reading area names and counting their number
         String file = "areaNames.txt";
         ArrayList<String> areaNames = new ArrayList<>();
         int numAreas = 0;
+        SettingReader st = new SettingReader();
+        String urlOut = st.readElementFromFileXml("settings.xml", "areaNode", "urlOut");
+        System.out.println("Broker out: " + urlOut);
+        ServerLocator locatorOut = ActiveMQClient.createServerLocator(urlOut);
 
         BufferedReader bufferedReader = null;
         try {
@@ -43,7 +50,7 @@ public class Main {
         // Main thread creating online fog objects/threads (a node per area)
         OnlineFogNode[] fogArray = new OnlineFogNode[numAreas];
         for (int i = 0; i < numAreas; i++) {
-            fogArray[i] = new OnlineFogNode(areaNames.get(i));
+            fogArray[i] = new OnlineFogNode(areaNames.get(i),locatorOut);
         }
 
         // Main Thread starting all fog threads

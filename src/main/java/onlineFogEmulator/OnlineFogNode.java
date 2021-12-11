@@ -20,14 +20,11 @@ public class OnlineFogNode extends Thread {
     private final BufferedWriter bufferedWriter;
     private final CSVPrinter csvPrinter;
     private final String NORTHBOUND_SUFFIX = "-Northbound";
+    private ServerLocator locatorOut;
 
-    public OnlineFogNode(String name) throws IOException {
+    public OnlineFogNode(String name, ServerLocator locatorOut) throws IOException {
         this.name = name;
-
-        // Reading the broker URL
-        SettingReader st = new SettingReader();
-        urlOut = st.readElementFromFileXml("settings.xml", "areaNode", "urlOut");
-        System.out.println("Broker out: " + urlOut);
+        this.locatorOut = locatorOut;
         createProducer();
         bufferedWriter = new BufferedWriter(new FileWriter(name+"_logs.csv",true));
         csvPrinter = CSVFormat.DEFAULT.withDelimiter(';')
@@ -103,10 +100,12 @@ public class OnlineFogNode extends Thread {
                 }
 
                 //Setting the aggregationTimestamp
-                Gson g = new Gson();
-                s = g.fromJson(JSLine, AggregateVehiclesTravelTimeSample.class);
-                s.setAggTimestamp(System.currentTimeMillis());
-                JSLine = new Gson().toJson(s);
+                synchronized (this){
+                    Gson g = new Gson();
+                    s = g.fromJson(JSLine, AggregateVehiclesTravelTimeSample.class);
+                    s.setAggTimestamp(System.currentTimeMillis());
+                    JSLine = new Gson().toJson(s);
+                }
 
                 //System.out.println("Sending packet #" + i);
                 //System.out.println(JSLine);
@@ -116,7 +115,6 @@ public class OnlineFogNode extends Thread {
             long domainAggTimestamp = 0L;
             if(s != null)
                 domainAggTimestamp = s.getDomainAggTimestamp();
-            long differenceTimestamp = afterTimestamp - beforeTimestamp;
             try {
                 csvPrinter.printRecord(numLinks,domainAggTimestamp,beforeTimestamp,afterTimestamp);
                 csvPrinter.flush();
@@ -150,7 +148,6 @@ public class OnlineFogNode extends Thread {
     public void createProducer(){
         ClientSessionFactory factoryOut;
         try{
-            ServerLocator locatorOut = ActiveMQClient.createServerLocator(urlOut);
             factoryOut = locatorOut.createSessionFactory();
             sessionOut = factoryOut.createSession(true,true);
             sessionOut.start();
@@ -170,7 +167,7 @@ public class OnlineFogNode extends Thread {
         try {
             msg = sessionOut.createMessage(true);
             msg.getBodyBuffer().writeString(messageBody);
-            if(producer == null){
+            if(producer == null || producer.isClosed()){
                 System.out.println("ERRORRRRRRR");
             }
             producer.send(msg);
