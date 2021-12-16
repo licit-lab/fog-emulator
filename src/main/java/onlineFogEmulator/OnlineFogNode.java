@@ -153,7 +153,11 @@ public class OnlineFogNode extends Thread {
             sessionOut.start();
 
             // A queue per producer (multipleNorthboundQueues)
-            sessionOut.createQueue(new SimpleString(this.name + NORTHBOUND_SUFFIX), RoutingType.ANYCAST, new SimpleString(this.name + NORTHBOUND_SUFFIX), true);
+            try {
+                sessionOut.createQueue(new SimpleString(this.name + NORTHBOUND_SUFFIX), RoutingType.ANYCAST, new SimpleString(this.name + NORTHBOUND_SUFFIX), true);
+            } catch (ActiveMQQueueExistsException e) {
+                System.err.println("Queue: " + this.name + NORTHBOUND_SUFFIX + " already exists.");
+            }
             if(producer == null)
                 producer = sessionOut.createProducer(new SimpleString(this.name + NORTHBOUND_SUFFIX));
 
